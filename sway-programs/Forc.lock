@@ -1,0 +1,25 @@
+[[package]]
+name = "blackjack"
+source = "member"
+dependencies = [
+    "reentrancy",
+    "std",
+    "vrf",
+]
+
+[[package]]
+name = "reentrancy"
+version = "0.26.1"
+source = "registry+reentrancy?0.26.1#QmSgL8w74XSe54aQH7ySQUA2Bc3abTNnN15jVrynRJrFRE!"
+dependencies = ["std"]
+
+[[package]]
+name = "std"
+version = "0.69.1"
+source = "registry+std?0.69.1#QmbPunScay4xpfHKpxQ71dFKXSiyJuPP8P8YhgX5Dkmzm9!"
+
+[[package]]
+name = "vrf"
+version = "0.1.2"
+source = "registry+vrf?0.1.2#QmNycYRx7asUMrghLiZmsURoDynDuwqs6Vm2h6haqW8mJA!"
+dependencies = ["std"]

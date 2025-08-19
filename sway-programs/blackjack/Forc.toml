@@ -1,0 +1,9 @@
+[project]
+authors = ["IGI-111"]
+entry = "main.sw"
+name = "blackjack"
+license = "UNLICENCED"
+
+[dependencies]
+reentrancy = "0.26.1"
+vrf = "0.1.2"
