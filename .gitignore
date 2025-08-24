@@ -25,6 +25,8 @@ dist-ssr
 
 .fuels
 
+.direnv
+
 sway-programs/**/out
 .turbo
 
