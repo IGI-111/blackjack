@@ -307,3 +307,109 @@ fn simulate_game(game: Address) -> GameState {
     }
 }
 
+#[test]
+fn simple_game_test() {
+    let bj = abi(Blackjack, CONTRACT_ID);
+    bj.start(b256::zero(), 0);
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 3);
+    assert_eq(game_state.player_score, 17);
+    assert_eq(game_state.outcome, Outcome::Continue);
+    assert_eq(game_state.bet, 0);
+
+    bj.hit(b256::zero());
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    player_cards.push(2); // 3
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 3);
+    assert_eq(game_state.player_score, 20);
+    assert_eq(game_state.outcome, Outcome::Continue);
+    assert_eq(game_state.bet, 0);
+
+    bj.stand(b256::zero());
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    dealer_cards.push(2); // 3
+    dealer_cards.push(11); // J
+    dealer_cards.push(6); // 7
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    player_cards.push(2); // 3
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 23);
+    assert_eq(game_state.player_score, 20);
+    assert_eq(game_state.outcome, Outcome::Win);
+    assert_eq(game_state.bet, 0);
+}
+
+#[test]
+fn loss_game_test() {
+    let bj = abi(Blackjack, CONTRACT_ID);
+    bj.start(b256::zero(), 0);
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 3);
+    assert_eq(game_state.player_score, 17);
+    assert_eq(game_state.outcome, Outcome::Continue);
+    assert_eq(game_state.bet, 0);
+
+    bj.hit(b256::zero());
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    player_cards.push(2); // 3
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 3);
+    assert_eq(game_state.player_score, 20);
+    assert_eq(game_state.outcome, Outcome::Continue);
+    assert_eq(game_state.bet, 0);
+
+    bj.hit(b256::zero());
+
+    let game_state = bj.game_state(std::auth::caller_address().unwrap());
+    let mut dealer_cards = Bytes::new();
+    dealer_cards.push(2); // 3
+    assert_eq(game_state.dealer_cards, dealer_cards);
+    let mut player_cards = Bytes::new();
+    player_cards.push(11); // J
+    player_cards.push(6); // 7
+    player_cards.push(2); // 3
+    player_cards.push(2); // 3
+    assert_eq(game_state.player_cards, player_cards);
+    assert_eq(game_state.dealer_score, 3);
+    assert_eq(game_state.player_score, 23);
+    assert_eq(game_state.outcome, Outcome::Bust);
+    assert_eq(game_state.bet, 0);
+}
+
